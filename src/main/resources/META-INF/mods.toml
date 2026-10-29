@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="worldbattles_quests"
+version="0.1.0"
+displayName="WorldBattles Quests"
+description='''Three animated quest NPCs for WorldBattles.'''
+
+[[dependencies.worldbattles_quests]]
+modId="forge"
+mandatory=true
+versionRange="[47.3.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.worldbattles_quests]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.worldbattles_quests]]
+modId="geckolib"
+mandatory=true
+versionRange="[4.4.9,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.worldbattles_quests]]
+modId="worldbattlesshop"
+mandatory=true
+versionRange="[0.2.2,)"
+ordering="AFTER"
+side="BOTH"
