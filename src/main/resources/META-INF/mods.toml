@@ -4,7 +4,7 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="worldbattles_quests"
-version="0.1.0"
+version="0.1.3"
 displayName="WorldBattles Quests"
 description='''Three animated quest NPCs for WorldBattles.'''
 
