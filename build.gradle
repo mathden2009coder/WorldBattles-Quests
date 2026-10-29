@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 group = 'com.worldbattles.quests'
-version = '0.1.6'
+version = '0.1.7'
 base { archivesName = 'WorldBattlesQuests' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
