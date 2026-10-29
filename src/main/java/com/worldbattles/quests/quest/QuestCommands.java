@@ -45,6 +45,41 @@ public final class QuestCommands {
                             ctx.getSource().sendSuccess(() -> Component.literal("PNJ " + id + " supprimé."), true);
                             return 1;
                         })))
+                .then(Commands.literal("turn")
+                    .requires(source -> source.hasPermission(2))
+                    .then(Commands.argument("npc", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            builder.suggest("blacksmith");
+                            builder.suggest("explorer");
+                            builder.suggest("hunter");
+                            return builder.buildFuture();
+                        })
+                        .executes(ctx -> {
+                            ServerPlayer player = ctx.getSource().getPlayerOrException();
+                            String id = StringArgumentType.getString(ctx, "npc");
+                            if (!valid(id)) {
+                                ctx.getSource().sendFailure(Component.literal("PNJ inconnu. Utilise blacksmith, explorer ou hunter."));
+                                return 0;
+                            }
+                            QuestNpc npc = player.serverLevel()
+                                .getEntitiesOfClass(QuestNpc.class, player.getBoundingBox().inflate(64),
+                                    entity -> entity.questNpcId().equals(id))
+                                .stream()
+                                .min(Comparator.comparingDouble(player::distanceToSqr))
+                                .orElse(null);
+                            if (npc == null) {
+                                ctx.getSource().sendFailure(Component.literal("Aucun PNJ " + id + " trouvé à moins de 64 blocs."));
+                                return 0;
+                            }
+                            // In Minecraft yaw, subtracting 45 degrees turns the NPC to the right.
+                            float yaw = npc.getYRot() - 45.0F;
+                            npc.setYRot(yaw);
+                            npc.setYHeadRot(yaw);
+                            npc.setYBodyRot(yaw);
+                            npc.setYRot(yaw);
+                            ctx.getSource().sendSuccess(() -> Component.literal("PNJ " + id + " tourné de 45° vers la droite."), true);
+                            return 1;
+                        })))
                 .then(Commands.literal("donate")
                     .then(Commands.argument("npc", StringArgumentType.word())
                         .executes(ctx -> {
