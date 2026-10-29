@@ -1,1 +1,3 @@
-/* placeholder build file; replace in next commit */
+package com.worldbattles.quests.client.model;
+import com.worldbattles.quests.WorldBattlesQuests;import com.worldbattles.quests.entity.HunterNpc;import net.minecraft.resources.ResourceLocation;import software.bernie.geckolib.model.GeoModel;
+public class HunterModel extends GeoModel<HunterNpc>{public ResourceLocation getModelResource(HunterNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"geo/hunter.geo.json");}public ResourceLocation getTextureResource(HunterNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"textures/entity/hunter.png");}public ResourceLocation getAnimationResource(HunterNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"animations/hunter.animation.json");}}
