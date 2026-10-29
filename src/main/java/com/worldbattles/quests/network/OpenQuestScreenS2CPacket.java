@@ -1,7 +1,5 @@
 package com.worldbattles.quests.network;
 
-import com.worldbattles.quests.client.gui.QuestScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -31,10 +29,8 @@ public record OpenQuestScreenS2CPacket(String npcId, String npcName, String titl
     }
 
     public static void handle(OpenQuestScreenS2CPacket msg, Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
-            Minecraft.getInstance().setScreen(new QuestScreen(msg.npcId, msg.npcName,
-                msg.title, msg.description, msg.progress, msg.targetCount, msg.reward,
-                msg.deliveryQuest, msg.finished))));
+        context.get().enqueueWork(() ->
+            DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> ClientQuestScreenHandler.open(msg)));
         context.get().setPacketHandled(true);
     }
 }
