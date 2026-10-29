@@ -41,6 +41,15 @@ public abstract class QuestNpc extends PathfinderMob implements GeoEntity {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        // Jarvis occasionally resumes his smithing animation while waiting for a player.
+        if (!level().isClientSide && this instanceof BlacksmithNpc && tickCount % 140 == 0) {
+            triggerAnim("actions", "work");
+        }
+    }
+
+    @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
         if (level().isClientSide) return InteractionResult.SUCCESS;
