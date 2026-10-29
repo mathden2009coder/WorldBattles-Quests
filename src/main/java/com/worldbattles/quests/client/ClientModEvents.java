@@ -1,1 +1,4 @@
-/* placeholder build file; replace in next commit */
+package com.worldbattles.quests.client;
+import com.worldbattles.quests.WorldBattlesQuests;import com.worldbattles.quests.client.model.*;import com.worldbattles.quests.registry.ModEntities;import net.minecraftforge.api.distmarker.Dist;import net.minecraftforge.client.event.EntityRenderersEvent;import net.minecraftforge.eventbus.api.SubscribeEvent;import net.minecraftforge.fml.common.Mod;import software.bernie.geckolib.renderer.GeoEntityRenderer;
+@Mod.EventBusSubscriber(modid=WorldBattlesQuests.MODID,bus=Mod.EventBusSubscriber.Bus.MOD,value=Dist.CLIENT)
+public final class ClientModEvents {private ClientModEvents(){} @SubscribeEvent public static void renderers(EntityRenderersEvent.RegisterRenderers e){e.registerEntityRenderer(ModEntities.BLACKSMITH.get(),c->new GeoEntityRenderer<>(c,new BlacksmithModel()));e.registerEntityRenderer(ModEntities.EXPLORER.get(),c->new GeoEntityRenderer<>(c,new ExplorerModel()));e.registerEntityRenderer(ModEntities.HUNTER.get(),c->new GeoEntityRenderer<>(c,new HunterModel()));}}
