@@ -1,1 +1,3 @@
-/* placeholder build file; replace in next commit */
+package com.worldbattles.quests.client.model;
+import com.worldbattles.quests.WorldBattlesQuests;import com.worldbattles.quests.entity.BlacksmithNpc;import net.minecraft.resources.ResourceLocation;import software.bernie.geckolib.model.GeoModel;
+public class BlacksmithModel extends GeoModel<BlacksmithNpc>{public ResourceLocation getModelResource(BlacksmithNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"geo/blacksmith.geo.json");}public ResourceLocation getTextureResource(BlacksmithNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"textures/entity/blacksmith.png");}public ResourceLocation getAnimationResource(BlacksmithNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"animations/blacksmith.animation.json");}}
