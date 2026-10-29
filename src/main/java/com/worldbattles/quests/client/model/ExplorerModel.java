@@ -1,1 +1,3 @@
-/* placeholder build file; replace in next commit */
+package com.worldbattles.quests.client.model;
+import com.worldbattles.quests.WorldBattlesQuests;import com.worldbattles.quests.entity.ExplorerNpc;import net.minecraft.resources.ResourceLocation;import software.bernie.geckolib.model.GeoModel;
+public class ExplorerModel extends GeoModel<ExplorerNpc>{public ResourceLocation getModelResource(ExplorerNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"geo/explorer.geo.json");}public ResourceLocation getTextureResource(ExplorerNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"textures/entity/explorer.png");}public ResourceLocation getAnimationResource(ExplorerNpc e){return new ResourceLocation(WorldBattlesQuests.MODID,"animations/explorer.animation.json");}}
