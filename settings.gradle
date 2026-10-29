@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+        mavenCentral()
+    }
+}
+rootProject.name = 'WorldBattlesQuests'
