@@ -37,6 +37,8 @@ public class QuestScreen extends Screen {
         this.finished = finished;
     }
 
+    private boolean hunterTheme() { return "hunter".equals(npcId); }
+
     @Override
     protected void init() {
         panelLeft = (width - PANEL_WIDTH) / 2;
@@ -63,14 +65,26 @@ public class QuestScreen extends Screen {
         panelTop = (height - PANEL_HEIGHT) / 2;
         int right = panelLeft + PANEL_WIDTH;
         int bottom = panelTop + PANEL_HEIGHT;
+        boolean hunter = hunterTheme();
 
-        graphics.fill(panelLeft - 2, panelTop - 2, right + 2, bottom + 2, 0xFF0B0C10);
-        graphics.fill(panelLeft, panelTop, right, bottom, 0xFF28231D);
-        graphics.fill(panelLeft + 3, panelTop + 3, right - 3, panelTop + 25, 0xFF513B25);
-        graphics.fill(panelLeft + 3, panelTop + 26, right - 3, bottom - 3, 0xFF1D1B18);
+        int border = hunter ? 0xFF101A12 : 0xFF0B0C10;
+        int panel = hunter ? 0xFF202A20 : 0xFF28231D;
+        int header = hunter ? 0xFF365A38 : 0xFF513B25;
+        int content = hunter ? 0xFF1B241C : 0xFF1D1B18;
+        int accent = hunter ? 0xFF8ED66F : 0xFFFFC85A;
+        int progressColor = hunter ? 0xFF65B96A : 0xFF61B55D;
 
-        graphics.drawCenteredString(font, Component.literal(npcName).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), width / 2, panelTop + 8, 0xFFFFFF);
-        graphics.drawString(font, Component.literal(questTitle).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), panelLeft + 13, panelTop + 36, 0xFFFFFF);
+        graphics.fill(panelLeft - 2, panelTop - 2, right + 2, bottom + 2, border);
+        graphics.fill(panelLeft, panelTop, right, bottom, panel);
+        graphics.fill(panelLeft + 3, panelTop + 3, right - 3, panelTop + 25, header);
+        graphics.fill(panelLeft + 3, panelTop + 26, right - 3, bottom - 3, content);
+
+        graphics.drawCenteredString(font, Component.literal(npcName).withStyle(
+            hunter ? ChatFormatting.GREEN : ChatFormatting.GOLD, ChatFormatting.BOLD),
+            width / 2, panelTop + 8, 0xFFFFFF);
+        graphics.drawString(font, Component.literal(questTitle).withStyle(
+            hunter ? ChatFormatting.GREEN : ChatFormatting.YELLOW, ChatFormatting.BOLD),
+            panelLeft + 13, panelTop + 36, 0xFFFFFF);
 
         int descY = panelTop + 53;
         for (var line : font.split(Component.literal(description), PANEL_WIDTH - 28)) {
@@ -80,18 +94,22 @@ public class QuestScreen extends Screen {
         }
 
         if (finished) {
-            graphics.drawCenteredString(font, Component.literal("Toutes les quêtes sont terminées !").withStyle(ChatFormatting.GREEN), width / 2, panelTop + 105, 0xFFFFFF);
+            graphics.drawCenteredString(font, Component.literal("Toutes les quêtes sont terminées !")
+                .withStyle(ChatFormatting.GREEN), width / 2, panelTop + 105, 0xFFFFFF);
         } else {
             int safeTarget = Math.max(1, targetCount);
             int shown = Math.min(progress, safeTarget);
-            graphics.drawString(font, Component.literal("Progression : " + shown + " / " + targetCount), panelLeft + 13, panelTop + 105, 0xFFFFFF);
+            graphics.drawString(font, Component.literal("Progression : " + shown + " / " + targetCount),
+                panelLeft + 13, panelTop + 105, 0xFFFFFF);
             int barX = panelLeft + 13;
             int barY = panelTop + 120;
             int barWidth = PANEL_WIDTH - 26;
             graphics.fill(barX, barY, barX + barWidth, barY + 8, 0xFF090909);
             int fillWidth = targetCount <= 0 ? 0 : (int) ((long) barWidth * shown / targetCount);
-            if (fillWidth > 0) graphics.fill(barX + 1, barY + 1, barX + Math.min(barWidth - 1, fillWidth), barY + 7, 0xFF61B55D);
-            graphics.drawString(font, Component.literal("Récompense : " + reward + " $"), panelLeft + 13, panelTop + 135, 0xFFFFC85A);
+            if (fillWidth > 0) graphics.fill(barX + 1, barY + 1,
+                barX + Math.min(barWidth - 1, fillWidth), barY + 7, progressColor);
+            graphics.drawString(font, Component.literal("Récompense : " + reward + " $"),
+                panelLeft + 13, panelTop + 135, accent);
         }
         super.render(graphics, mouseX, mouseY, partialTick);
     }

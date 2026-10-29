@@ -12,7 +12,6 @@ public final class QuestService {
         open(player, npc.questNpcId());
     }
 
-    /** Opens the client quest interface using the player's server-side saved progress. */
     public static void open(ServerPlayer player, String npcId) {
         if (!validNpc(npcId)) return;
         QuestSavedData saved = QuestSavedData.get(player.serverLevel());
@@ -65,8 +64,9 @@ public final class QuestService {
     private static String npcName(String id) {
         return switch (id) {
             case "blacksmith" -> "Jarvis le Forgeron";
-            case "explorer" -> "Exploratrice";
-            default -> "Chasseur";
+            case "explorer" -> "Mira l'Exploratrice";
+            case "hunter" -> "Dr. K. Driver le Traqueur";
+            default -> "PNJ de quêtes";
         };
     }
 
