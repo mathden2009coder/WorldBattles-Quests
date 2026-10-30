@@ -54,7 +54,7 @@ public abstract class QuestNpc extends PathfinderMob implements GeoEntity {
         if (level().isClientSide) return InteractionResult.SUCCESS;
         if (player instanceof ServerPlayer serverPlayer) {
             if (this instanceof BlacksmithNpc) triggerAnim("actions", "talk");
-            if (this instanceof HunterNpc) triggerAnim("actions", "talk");
+            if (this instanceof HunterNpc hunter) hunter.startTalking();
             QuestService.interact(serverPlayer, this);
         }
         return InteractionResult.CONSUME;
