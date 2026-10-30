@@ -43,7 +43,6 @@ public abstract class QuestNpc extends PathfinderMob implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        // Jarvis occasionally resumes his smithing animation while waiting for a player.
         if (!level().isClientSide && this instanceof BlacksmithNpc && tickCount % 140 == 0) {
             triggerAnim("actions", "work");
         }
@@ -55,6 +54,7 @@ public abstract class QuestNpc extends PathfinderMob implements GeoEntity {
         if (level().isClientSide) return InteractionResult.SUCCESS;
         if (player instanceof ServerPlayer serverPlayer) {
             if (this instanceof BlacksmithNpc) triggerAnim("actions", "talk");
+            if (this instanceof HunterNpc) triggerAnim("actions", "talk");
             QuestService.interact(serverPlayer, this);
         }
         return InteractionResult.CONSUME;
