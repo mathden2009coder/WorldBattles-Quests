@@ -26,7 +26,6 @@ public class HunterNpc extends QuestNpc {
     private static final RawAnimation INSPECT =
         RawAnimation.begin().thenPlay("animation.hunter.inspecting_sword");
 
-    // Exact lengths from hunter.animation.json, converted to 20 game ticks/second.
     private static final int IDLE_CYCLE_TICKS = 108; // 5.375 seconds
     private static final int TALK_TICKS = 60;        // 3 seconds
     private static final int INSPECT_TICKS = 50;     // 2.5 seconds
@@ -70,19 +69,17 @@ public class HunterNpc extends QuestNpc {
     public void tick() {
         super.tick();
         if (level().isClientSide) return;
-
         if (--stateTicksRemaining > 0) return;
 
         byte state = getAnimationState();
-        if (state == STATE_TALK || state == STATE_INSPECT) {
-            // Returning to IDLE switches the single controller to the idle clip,
-            // which starts from its first frame rather than resuming mid-cycle.
+        if (state == STATE_TALK) {
             int idleCycles = IDLE_CYCLES_BETWEEN_INSPECTIONS[inspectionIntervalIndex];
             setAnimationState(STATE_IDLE, IDLE_CYCLE_TICKS * idleCycles);
-            if (state == STATE_INSPECT) {
-                inspectionIntervalIndex = (inspectionIntervalIndex + 1)
-                    % IDLE_CYCLES_BETWEEN_INSPECTIONS.length;
-            }
+        } else if (state == STATE_INSPECT) {
+            inspectionIntervalIndex = (inspectionIntervalIndex + 1)
+                % IDLE_CYCLES_BETWEEN_INSPECTIONS.length;
+            int idleCycles = IDLE_CYCLES_BETWEEN_INSPECTIONS[inspectionIntervalIndex];
+            setAnimationState(STATE_IDLE, IDLE_CYCLE_TICKS * idleCycles);
         } else {
             // The complete idle loop(s) have elapsed: play inspection exactly once.
             setAnimationState(STATE_INSPECT, INSPECT_TICKS);
@@ -91,8 +88,7 @@ public class HunterNpc extends QuestNpc {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // One controller owns all three clips, so their bone transforms can never
-        // overlap or blend with a second controller.
+        // One controller owns all clips: their bone transforms cannot overlap.
         controllers.add(new AnimationController<>(this, "hunter_main", 0, state -> {
             byte animationState = state.getAnimatable().getAnimationState();
             if (animationState == STATE_TALK) return state.setAndContinue(TALK);
