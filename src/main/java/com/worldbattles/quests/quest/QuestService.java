@@ -24,11 +24,12 @@ public final class QuestService {
         QuestSavedData.PlayerData data = saved.player(player.getUUID());
         QuestDefinition quest = QuestCatalog.current(npcId, data.completed(npcId));
         String npcName = npcName(npcId);
-        // On ordinary interaction, show the lore passage for the quest level currently active.
-        // Keep the NPC introduction for level 1; successful claims still reveal the passage just completed.
+        // After claiming, QuestCatalog.current already resolves to the next unfinished quest.
+        // Reveal that next quest's lore immediately; on the final claim, keep the final chapter.
         int loreLevel = quest == null ? QuestCatalog.forNpc(npcId).size() : quest.index();
         String story;
-        if (claimResult != null && claimResult.story() != null && !claimResult.story().isBlank()) {
+        if (claimResult != null && quest == null
+                && claimResult.story() != null && !claimResult.story().isBlank()) {
             story = claimResult.story();
         } else if (loreLevel <= 1) {
             story = QuestLore.intro(npcId);
