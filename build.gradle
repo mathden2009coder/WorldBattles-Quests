@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 group = 'com.worldbattles.quests'
-version = '0.1.16'
+version = '0.1.17'
 base { archivesName = 'WorldBattlesQuests' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -31,7 +31,7 @@ dependencies {
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 tasks.register('extractMayllineAssets', Copy) {
-    from zipTree(file('assets/maylline-assets.zip'))
+    from zipTree(file('assets/maylline-assets-corrected.zip'))
     into file('src/main/resources/assets/worldbattles_quests')
 }
 
@@ -74,10 +74,24 @@ tasks.register('fixNpcTextureUvs') {
         }
 
         scaleGeometry('src/main/resources/assets/worldbattles_quests/geo/maylline.geo.json', 1024, 1024)
+        scaleGeometry('src/main/resources/assets/worldbattles_quests/geo/blacksmith.geo.json', 256, 256)
         scaleGeometry('src/main/resources/assets/worldbattles_quests/geo/hunter.geo.json', 512, 512)
 
         File hunterTexture = file('src/main/resources/assets/worldbattles_quests/textures/entity/hunter.png')
         if (!hunterTexture.exists()) throw new GradleException("Dr. K. Driver texture is missing: " + hunterTexture)
+        def expectedTextures = [
+            'src/main/resources/assets/worldbattles_quests/textures/entity/blacksmith.png': [256, 256],
+            'src/main/resources/assets/worldbattles_quests/textures/entity/hunter.png': [512, 512],
+            'src/main/resources/assets/worldbattles_quests/textures/entity/maylline.png': [1024, 1024]
+        ]
+        expectedTextures.each { texturePath, dimensions ->
+            File textureFile = file(texturePath)
+            def image = javax.imageio.ImageIO.read(textureFile)
+            if (image == null || image.width != dimensions[0] || image.height != dimensions[1]) {
+                throw new GradleException("Wrong NPC texture dimensions for " + textureFile +
+                    ": expected " + dimensions[0] + "x" + dimensions[1])
+            }
+        }
     }
 }
 
