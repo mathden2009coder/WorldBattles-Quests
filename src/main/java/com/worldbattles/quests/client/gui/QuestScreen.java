@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 
 public class QuestScreen extends Screen {
     private static final int PANEL_WIDTH = 330;
@@ -46,6 +47,10 @@ public class QuestScreen extends Screen {
 
     /** Draw text without Minecraft's default drop shadow. */
     private void drawPlain(GuiGraphics graphics, Component text, int x, int y, int color) {
+        graphics.drawString(font, text, x, y, color, false);
+    }
+
+    private void drawPlain(GuiGraphics graphics, FormattedCharSequence text, int x, int y, int color) {
         graphics.drawString(font, text, x, y, color, false);
     }
 
