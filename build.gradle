@@ -30,12 +30,57 @@ dependencies {
 }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
-// This archive contains the original Blockbench texture sheets at their full
-// exported resolutions, the matching geometry/animations, and Hunter's texture.
 tasks.register('extractMayllineAssets', Copy) {
     from zipTree(file('assets/maylline-assets.zip'))
     into file('src/main/resources/assets/worldbattles_quests')
 }
-tasks.named('processResources') {
+
+// Match the model's UV atlas to the supplied high-resolution textures.
+// Keep the original texture pixels; scale both UVs and atlas dimensions together.
+tasks.register('fixNpcTextureUvs') {
     dependsOn tasks.named('extractMayllineAssets')
+    doLast {
+        def scaleGeometry = { String relativePath, int targetWidth, int targetHeight ->
+            File geoFile = file(relativePath)
+            if (!geoFile.exists()) throw new GradleException("Missing NPC geometry: " + geoFile)
+            def root = new groovy.json.JsonSlurper().parse(geoFile)
+            def geometries = root['minecraft:geometry']
+            if (!(geometries instanceof List) || geometries.isEmpty()) {
+                throw new GradleException("Invalid geometry JSON: " + geoFile)
+            }
+            geometries.each { geometry ->
+                def description = geometry.description
+                int oldWidth = description.texture_width as int
+                int oldHeight = description.texture_height as int
+                if (oldWidth <= 0 || oldHeight <= 0) throw new GradleException("Invalid atlas size: " + geoFile)
+                double sx = targetWidth / (double) oldWidth
+                double sy = targetHeight / (double) oldHeight
+                if (sx != 1.0d || sy != 1.0d) {
+                    (geometry.bones ?: []).each { bone ->
+                        (bone.cubes ?: []).each { cube ->
+                            if (cube.uv instanceof List && cube.uv.size() >= 2) {
+                                cube.uv = [cube.uv[0] * sx, cube.uv[1] * sy]
+                            }
+                            if (cube.uv_size instanceof List && cube.uv_size.size() >= 2) {
+                                cube.uv_size = [cube.uv_size[0] * sx, cube.uv_size[1] * sy]
+                            }
+                        }
+                    }
+                }
+                description.texture_width = targetWidth
+                description.texture_height = targetHeight
+            }
+            geoFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(root)), 'UTF-8')
+        }
+
+        scaleGeometry('src/main/resources/assets/worldbattles_quests/geo/maylline.geo.json', 1024, 1024)
+        scaleGeometry('src/main/resources/assets/worldbattles_quests/geo/hunter.geo.json', 512, 512)
+
+        File hunterTexture = file('src/main/resources/assets/worldbattles_quests/textures/entity/hunter.png')
+        if (!hunterTexture.exists()) throw new GradleException("Dr. K. Driver texture is missing: " + hunterTexture)
+    }
+}
+
+tasks.named('processResources') {
+    dependsOn tasks.named('fixNpcTextureUvs')
 }
