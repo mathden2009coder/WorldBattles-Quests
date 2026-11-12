@@ -5,7 +5,6 @@ import java.util.*;
 
 public final class QuestCatalog {
     private static final Map<String, List<QuestDefinition>> CHAINS = new LinkedHashMap<>();
-    // Keep the original reward progression unchanged.
     private static final long[] REWARDS = {
         100, 150, 250, 350, 500, 700, 900, 1200, 1600, 2200,
         3000, 4200, 6000, 8500, 12000, 18000, 27000, 40000, 65000, 100000
@@ -23,10 +22,9 @@ public final class QuestCatalog {
         add("hunter", "Contrats de chasse", QuestDefinition.Type.KILL_ENTITY,
             new String[]{"zombie","skeleton","spider","creeper","drowned","enderman","witch","pillager",
                 "phantom","slime","blaze","ghast","hoglin","piglin_brute","cave_spider","guardian",
-                "ravager","evoker","wither_skeleton","magma_cube"},
+                "ravager","evoker","piglin","magma_cube"},
             new int[]{5,6,8,8,10,4,4,8,6,12,8,3,10,4,5,8,3,3,10,1});
 
-        // Twenty archive deliveries, all obtainable without travelling to the End.
         add("maylline", "Les pages égarées", QuestDefinition.Type.DELIVER_ITEM,
             new String[]{"paper","book","feather","ink_sac","map","compass","writable_book","bookshelf",
                 "lapis_lazuli","glow_ink_sac","amethyst_shard","spyglass","ender_pearl","written_book",
@@ -65,7 +63,7 @@ public final class QuestCatalog {
             case "glow_ink_sac" -> "sacs d'encre lumineuse";
             case "amethyst_shard" -> "éclats d'améthyste";
             case "spyglass" -> "longues-vues";
-            case "ender_pearl" -> "perles de l'Ender (Endermen de l'Overworld)";
+            case "ender_pearl" -> "perles d'Endermen (dans l'Overworld)";
             case "written_book" -> "livres écrits";
             case "enchanted_book" -> "livres enchantés";
             case "amethyst_block" -> "blocs d'améthyste";

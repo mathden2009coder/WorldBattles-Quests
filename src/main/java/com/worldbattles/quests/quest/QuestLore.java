@@ -2,10 +2,7 @@ package com.worldbattles.quests.quest;
 
 import java.util.List;
 
-/**
- * Short, friendly lore fragments revealed one at a time when a quest is claimed.
- * The three stories share the history of the Freelands and the old Lantern Road.
- */
+/** Short, friendly lore fragments revealed one at a time when a quest is claimed. */
 public final class QuestLore {
     private static final String MAYLLINE_INTRO =
         "Je suis Maylline, gardienne des Archives. Les pages que je protège racontent comment les Freelands ont perdu leur ancienne route vers le monde d'où venaient les premiers voyageurs.";
@@ -79,8 +76,8 @@ public final class QuestLore {
         "Les Gardiens protègent les monuments sous-marins. Un ancien relais se trouvait près de l'un d'eux, au bord de l'océan.",
         "Les ravageurs accompagnent les raids des pillards. Leur présence près des Freelands confirme que quelqu'un cherche encore à contrôler les routes.",
         "Les évocateurs utilisent une magie étrange. Dans leurs coffres, j'ai trouvé des notes parlant d'une lumière bleue au milieu de la Brume.",
-        "Les squelettes Wither gardent les forteresses du Nether. Leurs os sombres rappellent les histoires que Maylline conserve dans ses vieux livres.",
-        "Même les petits cubes de magma peuvent brûler un sentier entier. La route est presque prête à être surveillée de nouveau : Maylline possède désormais la page maîtresse, et je connais le chemin sûr jusqu'à la grande lanterne."
+        "Les piglins gardent les passages du Nether et n'aiment pas les visiteurs. L'un d'eux portait un fragment de métal gravé du symbole des Freelands.",
+        "Même un petit cube de magma peut brûler un sentier entier. La route est presque prête à être surveillée de nouveau : Maylline possède désormais la page maîtresse, et je connais le chemin sûr jusqu'à la grande lanterne."
     );
 
     public static String intro(String npcId) {
