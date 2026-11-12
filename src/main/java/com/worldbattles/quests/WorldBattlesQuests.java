@@ -3,6 +3,7 @@ package com.worldbattles.quests;
 import com.worldbattles.quests.entity.BlacksmithNpc;
 import com.worldbattles.quests.entity.ExplorerNpc;
 import com.worldbattles.quests.entity.HunterNpc;
+import com.worldbattles.quests.entity.MayllineNpc;
 import com.worldbattles.quests.network.ModNetworking;
 import com.worldbattles.quests.quest.QuestCommands;
 import com.worldbattles.quests.quest.QuestEvents;
@@ -32,5 +33,6 @@ public class WorldBattlesQuests {
         event.put(ModEntities.BLACKSMITH.get(), BlacksmithNpc.createAttributes().build());
         event.put(ModEntities.EXPLORER.get(), ExplorerNpc.createAttributes().build());
         event.put(ModEntities.HUNTER.get(), HunterNpc.createAttributes().build());
+        event.put(ModEntities.MAYLLINE.get(), MayllineNpc.createAttributes().build());
     }
 }

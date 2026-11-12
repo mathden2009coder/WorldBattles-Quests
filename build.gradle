@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 group = 'com.worldbattles.quests'
-version = '0.1.10'
+version = '0.1.11'
 base { archivesName = 'WorldBattlesQuests' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -25,7 +25,17 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.4.9')
 }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+// The archive keeps the large Blockbench animation data compact in Git.
+// Its contents are added to the regular mod resources during every Gradle build.
+tasks.register('extractMayllineAssets', Copy) {
+    from zipTree(file('assets/maylline-assets.zip'))
+    into file('src/main/resources/assets/worldbattles_quests')
+}
+tasks.named('processResources') {
+    dependsOn tasks.named('extractMayllineAssets')
+}

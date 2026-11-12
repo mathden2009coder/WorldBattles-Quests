@@ -22,23 +22,24 @@ public final class QuestCommands {
                             builder.suggest("blacksmith");
                             builder.suggest("explorer");
                             builder.suggest("hunter");
+                            builder.suggest("maylline");
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
                             ServerPlayer player = ctx.getSource().getPlayerOrException();
                             String id = StringArgumentType.getString(ctx, "npc");
                             if (!valid(id)) {
-                                ctx.getSource().sendFailure(Component.literal("PNJ inconnu. Utilise blacksmith, explorer ou hunter."));
+                                ctx.getSource().sendFailure(Component.literal(
+                                    "PNJ inconnu. Utilise blacksmith, explorer, hunter ou maylline."));
                                 return 0;
                             }
                             QuestNpc npc = player.serverLevel()
                                 .getEntitiesOfClass(QuestNpc.class, player.getBoundingBox().inflate(64),
                                     entity -> entity.questNpcId().equals(id))
-                                .stream()
-                                .min(Comparator.comparingDouble(player::distanceToSqr))
-                                .orElse(null);
+                                .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
                             if (npc == null) {
-                                ctx.getSource().sendFailure(Component.literal("Aucun PNJ " + id + " trouvé à moins de 64 blocs."));
+                                ctx.getSource().sendFailure(Component.literal(
+                                    "Aucun PNJ " + id + " trouvé à moins de 64 blocs."));
                                 return 0;
                             }
                             npc.discard();
@@ -52,32 +53,32 @@ public final class QuestCommands {
                             builder.suggest("blacksmith");
                             builder.suggest("explorer");
                             builder.suggest("hunter");
+                            builder.suggest("maylline");
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
                             ServerPlayer player = ctx.getSource().getPlayerOrException();
                             String id = StringArgumentType.getString(ctx, "npc");
                             if (!valid(id)) {
-                                ctx.getSource().sendFailure(Component.literal("PNJ inconnu. Utilise blacksmith, explorer ou hunter."));
+                                ctx.getSource().sendFailure(Component.literal(
+                                    "PNJ inconnu. Utilise blacksmith, explorer, hunter ou maylline."));
                                 return 0;
                             }
                             QuestNpc npc = player.serverLevel()
                                 .getEntitiesOfClass(QuestNpc.class, player.getBoundingBox().inflate(64),
                                     entity -> entity.questNpcId().equals(id))
-                                .stream()
-                                .min(Comparator.comparingDouble(player::distanceToSqr))
-                                .orElse(null);
+                                .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
                             if (npc == null) {
-                                ctx.getSource().sendFailure(Component.literal("Aucun PNJ " + id + " trouvé à moins de 64 blocs."));
+                                ctx.getSource().sendFailure(Component.literal(
+                                    "Aucun PNJ " + id + " trouvé à moins de 64 blocs."));
                                 return 0;
                             }
-                            // In Minecraft yaw, subtracting 45 degrees turns the NPC to the right.
                             float yaw = npc.getYRot() - 45.0F;
                             npc.setYRot(yaw);
                             npc.setYHeadRot(yaw);
                             npc.setYBodyRot(yaw);
-                            npc.setYRot(yaw);
-                            ctx.getSource().sendSuccess(() -> Component.literal("PNJ " + id + " tourné de 45° vers la droite."), true);
+                            ctx.getSource().sendSuccess(
+                                () -> Component.literal("PNJ " + id + " tourné de 45° vers la droite."), true);
                             return 1;
                         })))
                 .then(Commands.literal("donate")
@@ -108,6 +109,7 @@ public final class QuestCommands {
     }
 
     private static boolean valid(String id) {
-        return id.equals("blacksmith") || id.equals("explorer") || id.equals("hunter");
+        return id.equals("blacksmith") || id.equals("explorer")
+            || id.equals("hunter") || id.equals("maylline");
     }
 }

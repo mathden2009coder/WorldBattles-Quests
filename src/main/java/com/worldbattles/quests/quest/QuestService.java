@@ -58,7 +58,8 @@ public final class QuestService {
     }
 
     private static boolean validNpc(String id) {
-        return id != null && (id.equals("blacksmith") || id.equals("explorer") || id.equals("hunter"));
+        return id != null && (id.equals("blacksmith") || id.equals("explorer")
+            || id.equals("hunter") || id.equals("maylline"));
     }
 
     private static String npcName(String id) {
@@ -66,6 +67,7 @@ public final class QuestService {
             case "blacksmith" -> "Jarvis le Forgeron";
             case "explorer" -> "Mira l'Exploratrice";
             case "hunter" -> "Dr. K. Driver le Traqueur";
+            case "maylline" -> "Maylline — Gardienne des Archives";
             default -> "PNJ de quêtes";
         };
     }
