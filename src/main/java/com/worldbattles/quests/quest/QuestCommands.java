@@ -20,7 +20,6 @@ public final class QuestCommands {
                     .then(Commands.argument("npc", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
                             builder.suggest("blacksmith");
-                            builder.suggest("explorer");
                             builder.suggest("hunter");
                             builder.suggest("maylline");
                             return builder.buildFuture();
@@ -30,7 +29,7 @@ public final class QuestCommands {
                             String id = StringArgumentType.getString(ctx, "npc");
                             if (!valid(id)) {
                                 ctx.getSource().sendFailure(Component.literal(
-                                    "PNJ inconnu. Utilise blacksmith, explorer, hunter ou maylline."));
+                                    "PNJ inconnu. Utilise blacksmith, hunter ou maylline."));
                                 return 0;
                             }
                             QuestNpc npc = player.serverLevel()
@@ -51,7 +50,6 @@ public final class QuestCommands {
                     .then(Commands.argument("npc", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
                             builder.suggest("blacksmith");
-                            builder.suggest("explorer");
                             builder.suggest("hunter");
                             builder.suggest("maylline");
                             return builder.buildFuture();
@@ -61,7 +59,7 @@ public final class QuestCommands {
                             String id = StringArgumentType.getString(ctx, "npc");
                             if (!valid(id)) {
                                 ctx.getSource().sendFailure(Component.literal(
-                                    "PNJ inconnu. Utilise blacksmith, explorer, hunter ou maylline."));
+                                    "PNJ inconnu. Utilise blacksmith, hunter ou maylline."));
                                 return 0;
                             }
                             QuestNpc npc = player.serverLevel()
@@ -109,7 +107,6 @@ public final class QuestCommands {
     }
 
     private static boolean valid(String id) {
-        return id.equals("blacksmith") || id.equals("explorer")
-            || id.equals("hunter") || id.equals("maylline");
+        return id.equals("blacksmith") || id.equals("hunter") || id.equals("maylline");
     }
 }

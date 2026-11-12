@@ -8,7 +8,8 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class ModNetworking {
-    private static final String PROTOCOL = "1";
+    // Protocol 2 adds the story fragment and the amount actually paid by a claimed chapter.
+    private static final String PROTOCOL = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
         .named(new ResourceLocation(WorldBattlesQuests.MODID, "main"))
         .networkProtocolVersion(() -> PROTOCOL)
@@ -33,10 +34,10 @@ public final class ModNetworking {
     public static void openQuestScreen(ServerPlayer player, String npcId, String npcName,
                                        String title, String description, int progress,
                                        int targetCount, long reward, boolean deliveryQuest,
-                                       boolean finished) {
+                                       boolean finished, String story, long earnedReward) {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),
             new OpenQuestScreenS2CPacket(npcId, npcName, title, description, progress,
-                targetCount, reward, deliveryQuest, finished));
+                targetCount, reward, deliveryQuest, finished, story, earnedReward));
     }
 
     public static void sendQuestAction(String action, String npcId) {

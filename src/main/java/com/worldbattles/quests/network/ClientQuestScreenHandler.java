@@ -11,7 +11,7 @@ public final class ClientQuestScreenHandler {
     public static void open(OpenQuestScreenS2CPacket msg) {
         Minecraft.getInstance().setScreen(new QuestScreen(msg.npcId(), msg.npcName(),
             msg.title(), msg.description(), msg.progress(), msg.targetCount(), msg.reward(),
-            msg.deliveryQuest(), msg.finished()));
+            msg.deliveryQuest(), msg.finished(), msg.story(), msg.earnedReward()));
     }
 
     private ClientQuestScreenHandler() {}

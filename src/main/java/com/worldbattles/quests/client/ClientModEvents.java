@@ -2,7 +2,6 @@ package com.worldbattles.quests.client;
 
 import com.worldbattles.quests.WorldBattlesQuests;
 import com.worldbattles.quests.client.model.BlacksmithModel;
-import com.worldbattles.quests.client.model.ExplorerModel;
 import com.worldbattles.quests.client.model.HunterModel;
 import com.worldbattles.quests.client.model.MayllineModel;
 import com.worldbattles.quests.registry.ModEntities;
@@ -20,11 +19,8 @@ public final class ClientModEvents {
     public static void renderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.BLACKSMITH.get(),
             context -> new ScaledQuestNpcRenderer<>(context, new BlacksmithModel(), 1.5f));
-        event.registerEntityRenderer(ModEntities.EXPLORER.get(),
-            context -> new GeoEntityRenderer<>(context, new ExplorerModel()));
         event.registerEntityRenderer(ModEntities.HUNTER.get(),
             context -> new ScaledQuestNpcRenderer<>(context, new HunterModel(), 1.25f));
-        // Maylline's Blockbench model is taller because she is sitting on a chair.
         event.registerEntityRenderer(ModEntities.MAYLLINE.get(),
             context -> new ScaledQuestNpcRenderer<>(context, new MayllineModel(), 0.6f));
     }

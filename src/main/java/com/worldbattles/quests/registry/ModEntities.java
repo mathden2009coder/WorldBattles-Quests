@@ -2,7 +2,6 @@ package com.worldbattles.quests.registry;
 
 import com.worldbattles.quests.WorldBattlesQuests;
 import com.worldbattles.quests.entity.BlacksmithNpc;
-import com.worldbattles.quests.entity.ExplorerNpc;
 import com.worldbattles.quests.entity.HunterNpc;
 import com.worldbattles.quests.entity.MayllineNpc;
 import net.minecraft.world.entity.EntityType;
@@ -18,10 +17,6 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<BlacksmithNpc>> BLACKSMITH =
         TYPES.register("blacksmith", () -> EntityType.Builder.of(BlacksmithNpc::new, MobCategory.MISC)
             .sized(1.0f, 2.0f).clientTrackingRange(10).build("blacksmith"));
-
-    public static final RegistryObject<EntityType<ExplorerNpc>> EXPLORER =
-        TYPES.register("explorer", () -> EntityType.Builder.of(ExplorerNpc::new, MobCategory.MISC)
-            .sized(0.7f, 1.95f).clientTrackingRange(10).build("explorer"));
 
     public static final RegistryObject<EntityType<HunterNpc>> HUNTER =
         TYPES.register("hunter", () -> EntityType.Builder.of(HunterNpc::new, MobCategory.MISC)

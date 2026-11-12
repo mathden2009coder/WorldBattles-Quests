@@ -4,9 +4,9 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="worldbattles_quests"
-version="0.1.11"
+version="0.1.12"
 displayName="WorldBattles Quests"
-description='''Four animated quest NPCs for WorldBattles.'''
+description='''Three animated quest NPCs and the history of the Freelands.'''
 
 [[dependencies.worldbattles_quests]]
 modId="forge"

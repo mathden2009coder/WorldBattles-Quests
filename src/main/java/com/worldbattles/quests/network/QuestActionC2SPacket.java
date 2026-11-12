@@ -21,12 +21,15 @@ public record QuestActionC2SPacket(String action, String npcId) {
         context.get().enqueueWork(() -> {
             ServerPlayer player = context.get().getSender();
             if (player == null) return;
+
+            QuestService.ClaimResult claimResult = null;
             if ("donate".equals(msg.action)) {
                 QuestService.donate(player, msg.npcId);
             } else if ("claim".equals(msg.action)) {
-                QuestService.claim(player, msg.npcId);
+                claimResult = QuestService.claim(player, msg.npcId);
             }
-            QuestService.open(player, msg.npcId);
+            // On a successful claim, the refreshed screen carries the story and real paid amount.
+            QuestService.open(player, msg.npcId, claimResult);
         });
         context.get().setPacketHandled(true);
     }

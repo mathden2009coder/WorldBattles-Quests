@@ -1,25 +1,26 @@
 # WorldBattles Quests — Forge 1.20.1
 
-Projet Forge 1.20.1 / Java 17 / GeckoLib 4.4.9.
+Projet Forge 1.20.1 / Forge 47.4.10 / Java 17 / GeckoLib 4.4.9.
 
-La version 0.1.11 ajoute Maylline, la Gardienne des Archives, en conservant Jarvis, Mira et Dr. K. Driver.
-Son modèle assis utilise les animations idle, reading et talking fournies avec les fichiers Blockbench.
+La version 0.1.12 conserve Jarvis, le Traqueur et Maylline. Mira (Explorer) est retirée.
+Chaque PNJ raconte progressivement une partie de l'histoire des Freelands lorsqu'une quête est validée. La fenêtre affiche aussi le montant réellement ajouté au solde Shop.
 
-## Faire apparaître Maylline
+Les chaînes et récompenses de Jarvis et du Traqueur conservent leurs index, quantités et montants; seul le shulker (End) du Traqueur est remplacé par une araignée des cavernes. Maylline a désormais une conclusion réalisable sans aller dans l'End.
 
-En jeu, avec les permissions nécessaires :
+## Faire apparaître les PNJ
+
+`/summon worldbattles_quests:blacksmith ~ ~ ~`
+
+`/summon worldbattles_quests:hunter ~ ~ ~`
 
 `/summon worldbattles_quests:maylline ~ ~ ~`
 
-Les commandes d'administration `/wbquests remove` et `/wbquests turn` acceptent maintenant aussi l'identifiant `maylline`.
+Les commandes d'administration `/wbquests remove` et `/wbquests turn` acceptent ces trois identifiants.
 
-## Quêtes
+## Progression
 
-Maylline possède une chaîne indépendante de 20 quêtes de livraison autour des livres, cartes, encres et reliques.
-Sa progression et ses récompenses sont stockées séparément des autres PNJ.
+Le stockage `worldbattles_quests_progress` est conservé tel quel. Les clés des chaînes `blacksmith_XX`, `hunter_XX` et `maylline_XX` restent inchangées; aucune remise à zéro n'est appliquée aux sauvegardes des joueurs.
 
 ## Compilation
 
-Le projet cible Forge 1.20.1-47.4.10 et Java 17. Les ressources du modèle sont extraites automatiquement depuis `assets/maylline-assets.zip` pendant la compilation Gradle.
-
-GitHub Actions produit le JAR `WorldBattlesQuests-0.1.11.jar`.
+Le projet cible Forge 1.20.1-47.4.10 et Java 17. Les ressources du modèle Maylline sont extraites automatiquement depuis `assets/maylline-assets.zip` pendant la compilation Gradle. GitHub Actions produit le JAR.

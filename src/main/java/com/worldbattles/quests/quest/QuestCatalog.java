@@ -5,6 +5,7 @@ import java.util.*;
 
 public final class QuestCatalog {
     private static final Map<String, List<QuestDefinition>> CHAINS = new LinkedHashMap<>();
+    // Keep the original reward progression unchanged.
     private static final long[] REWARDS = {
         100, 150, 250, 350, 500, 700, 900, 1200, 1600, 2200,
         3000, 4200, 6000, 8500, 12000, 18000, 27000, 40000, 65000, 100000
@@ -18,23 +19,18 @@ public final class QuestCatalog {
                 "netherite_ingot","netherite_block"},
             new int[]{8,12,16,1,1,20,16,12,3,4,1,1,24,1,4,12,2,8,2,1});
 
-        add("explorer", "Carnet d'exploration", QuestDefinition.Type.DELIVER_ITEM,
-            new String[]{"bread","compass","map","oak_log","ender_pearl","boat","spyglass","lapis_lazuli",
-                "golden_apple","amethyst_shard","blaze_rod","ender_eye","ghast_tear","shulker_shell",
-                "elytra","heart_of_the_sea","totem_of_undying","nether_star","dragon_breath","dragon_egg"},
-            new int[]{8,1,2,32,4,2,1,16,2,12,8,8,4,4,1,1,1,1,8,1});
-
+        // The old Explorer/Mira chain is intentionally retired.
         add("hunter", "Contrats de chasse", QuestDefinition.Type.KILL_ENTITY,
             new String[]{"zombie","skeleton","spider","creeper","drowned","enderman","witch","pillager",
-                "phantom","slime","blaze","ghast","hoglin","piglin_brute","shulker","guardian",
-                "ravager","evoker","wither_skeleton","warden"},
+                "phantom","slime","blaze","ghast","hoglin","piglin_brute","cave_spider","guardian",
+                "ravager","evoker","wither_skeleton","magma_cube"},
             new int[]{5,6,8,8,10,4,4,8,6,12,8,3,10,4,5,8,3,3,10,1});
 
-        // A 20-step delivery chain themed around books, maps and rare records.
+        // Twenty archive deliveries, all obtainable without travelling to the End.
         add("maylline", "Les pages égarées", QuestDefinition.Type.DELIVER_ITEM,
             new String[]{"paper","book","feather","ink_sac","map","compass","writable_book","bookshelf",
                 "lapis_lazuli","glow_ink_sac","amethyst_shard","spyglass","ender_pearl","written_book",
-                "enchanted_book","echo_shard","recovery_compass","ancient_debris","nether_star","dragon_egg"},
+                "enchanted_book","amethyst_block","clock","quartz_block","crying_obsidian","lectern"},
             new int[]{32,8,16,12,4,1,2,6,24,8,16,1,8,1,2,4,1,6,1,1});
     }
 
@@ -42,9 +38,7 @@ public final class QuestCatalog {
                             String[] targets, int[] counts) {
         List<QuestDefinition> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            String label = "maylline".equals(npc)
-                ? mayllineLabel(targets[i])
-                : targets[i].replace('_', ' ');
+            String label = "maylline".equals(npc) ? mayllineLabel(targets[i]) : targets[i].replace('_', ' ');
             String description = type == QuestDefinition.Type.KILL_ENTITY
                 ? "Élimine " + counts[i] + " " + label + "."
                 : "Rapporte " + counts[i] + " " + label + ".";
@@ -71,14 +65,14 @@ public final class QuestCatalog {
             case "glow_ink_sac" -> "sacs d'encre lumineuse";
             case "amethyst_shard" -> "éclats d'améthyste";
             case "spyglass" -> "longues-vues";
-            case "ender_pearl" -> "perles de l'Ender";
+            case "ender_pearl" -> "perles de l'Ender (Endermen de l'Overworld)";
             case "written_book" -> "livres écrits";
             case "enchanted_book" -> "livres enchantés";
-            case "echo_shard" -> "fragments d'écho";
-            case "recovery_compass" -> "boussoles de récupération";
-            case "ancient_debris" -> "débris antiques";
-            case "nether_star" -> "étoiles du Nether";
-            case "dragon_egg" -> "œufs de dragon";
+            case "amethyst_block" -> "blocs d'améthyste";
+            case "clock" -> "horloges";
+            case "quartz_block" -> "blocs de quartz";
+            case "crying_obsidian" -> "obsidiennes pleureuses";
+            case "lectern" -> "lutrins";
             default -> item.replace('_', ' ');
         };
     }

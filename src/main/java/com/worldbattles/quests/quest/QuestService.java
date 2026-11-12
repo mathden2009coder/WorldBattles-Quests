@@ -8,25 +8,34 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public final class QuestService {
+    public record ClaimResult(long reward, String story) {}
+
     public static void interact(ServerPlayer player, QuestNpc npc) {
         open(player, npc.questNpcId());
     }
 
     public static void open(ServerPlayer player, String npcId) {
+        open(player, npcId, null);
+    }
+
+    public static void open(ServerPlayer player, String npcId, ClaimResult claimResult) {
         if (!validNpc(npcId)) return;
         QuestSavedData saved = QuestSavedData.get(player.serverLevel());
         QuestSavedData.PlayerData data = saved.player(player.getUUID());
         QuestDefinition quest = QuestCatalog.current(npcId, data.completed(npcId));
         String npcName = npcName(npcId);
+        String story = claimResult == null ? QuestLore.intro(npcId) : claimResult.story();
+        long earned = claimResult == null ? 0 : claimResult.reward();
+
         if (quest == null) {
             ModNetworking.openQuestScreen(player, npcId, npcName,
-                "Toutes les quêtes terminées", "Tu as terminé toutes les quêtes de " + npcName + ".",
-                0, 0, 0, false, true);
+                "Tous les chapitres sont terminés", "Tu as terminé toutes les quêtes de " + npcName + ".",
+                0, 0, 0, false, true, story, earned);
             return;
         }
         ModNetworking.openQuestScreen(player, npcId, npcName, quest.title(), quest.description(),
             data.progress(quest.id()), quest.count(), quest.reward(),
-            quest.type() == QuestDefinition.Type.DELIVER_ITEM, false);
+            quest.type() == QuestDefinition.Type.DELIVER_ITEM, false, story, earned);
     }
 
     public static void donate(ServerPlayer player, String npcId) {
@@ -46,26 +55,28 @@ public final class QuestService {
         player.getInventory().setChanged();
     }
 
-    public static void claim(ServerPlayer player, String npcId) {
-        if (!validNpc(npcId)) return;
+    /** Claims the current chapter, deposits its unchanged configured reward and returns its lore. */
+    public static ClaimResult claim(ServerPlayer player, String npcId) {
+        if (!validNpc(npcId)) return null;
         QuestSavedData saved = QuestSavedData.get(player.serverLevel());
         QuestSavedData.PlayerData data = saved.player(player.getUUID());
         QuestDefinition quest = QuestCatalog.current(npcId, data.completed(npcId));
-        if (quest == null || data.progress(quest.id()) < quest.count()) return;
-        if (!ShopEconomy.deposit(player, quest.reward())) return;
+        if (quest == null || data.progress(quest.id()) < quest.count()) return null;
+        if (!ShopEconomy.deposit(player, quest.reward())) return null;
+        String story = QuestLore.chapter(npcId, quest.index());
+        long earned = quest.reward();
         data.finish(npcId, quest.id());
         saved.setDirty();
+        return new ClaimResult(earned, story);
     }
 
     private static boolean validNpc(String id) {
-        return id != null && (id.equals("blacksmith") || id.equals("explorer")
-            || id.equals("hunter") || id.equals("maylline"));
+        return id != null && (id.equals("blacksmith") || id.equals("hunter") || id.equals("maylline"));
     }
 
     private static String npcName(String id) {
         return switch (id) {
             case "blacksmith" -> "Jarvis le Forgeron";
-            case "explorer" -> "Mira l'Exploratrice";
             case "hunter" -> "Dr. K. Driver le Traqueur";
             case "maylline" -> "Maylline — Gardienne des Archives";
             default -> "PNJ de quêtes";

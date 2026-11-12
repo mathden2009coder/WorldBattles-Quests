@@ -9,7 +9,8 @@ import java.util.function.Supplier;
 
 public record OpenQuestScreenS2CPacket(String npcId, String npcName, String title,
                                        String description, int progress, int targetCount,
-                                       long reward, boolean deliveryQuest, boolean finished) {
+                                       long reward, boolean deliveryQuest, boolean finished,
+                                       String story, long earnedReward) {
     public static void encode(OpenQuestScreenS2CPacket msg, FriendlyByteBuf buf) {
         buf.writeUtf(msg.npcId, 64);
         buf.writeUtf(msg.npcName, 128);
@@ -20,12 +21,15 @@ public record OpenQuestScreenS2CPacket(String npcId, String npcName, String titl
         buf.writeVarLong(msg.reward);
         buf.writeBoolean(msg.deliveryQuest);
         buf.writeBoolean(msg.finished);
+        buf.writeUtf(msg.story, 1024);
+        buf.writeVarLong(msg.earnedReward);
     }
 
     public static OpenQuestScreenS2CPacket decode(FriendlyByteBuf buf) {
         return new OpenQuestScreenS2CPacket(buf.readUtf(64), buf.readUtf(128),
             buf.readUtf(256), buf.readUtf(1024), buf.readVarInt(), buf.readVarInt(),
-            buf.readVarLong(), buf.readBoolean(), buf.readBoolean());
+            buf.readVarLong(), buf.readBoolean(), buf.readBoolean(), buf.readUtf(1024),
+            buf.readVarLong());
     }
 
     public static void handle(OpenQuestScreenS2CPacket msg, Supplier<NetworkEvent.Context> context) {
