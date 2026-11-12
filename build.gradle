@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 group = 'com.worldbattles.quests'
-version = '0.1.12'
+version = '0.1.13'
 base { archivesName = 'WorldBattlesQuests' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -30,8 +30,8 @@ dependencies {
 }
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
-// The archive keeps the large Blockbench animation data compact in Git.
-// Its contents are added to the regular mod resources during every Gradle build.
+// This archive contains the original Blockbench texture sheets at their full
+// exported resolutions, the matching geometry/animations, and Hunter's texture.
 tasks.register('extractMayllineAssets', Copy) {
     from zipTree(file('assets/maylline-assets.zip'))
     into file('src/main/resources/assets/worldbattles_quests')

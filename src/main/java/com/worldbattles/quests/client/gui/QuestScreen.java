@@ -44,6 +44,15 @@ public class QuestScreen extends Screen {
     private boolean hunterTheme() { return "hunter".equals(npcId); }
     private boolean mayllineTheme() { return "maylline".equals(npcId); }
 
+    /** Draw text without Minecraft's default drop shadow. */
+    private void drawPlain(GuiGraphics graphics, Component text, int x, int y, int color) {
+        graphics.drawString(font, text, x, y, color, false);
+    }
+
+    private void drawCenteredPlain(GuiGraphics graphics, Component text, int centerX, int y, int color) {
+        drawPlain(graphics, text, centerX - font.width(text) / 2, y, color);
+    }
+
     @Override
     protected void init() {
         panelLeft = (width - PANEL_WIDTH) / 2;
@@ -76,7 +85,6 @@ public class QuestScreen extends Screen {
         boolean maylline = mayllineTheme();
         boolean jarvis = "blacksmith".equals(npcId);
 
-        // Three distinct but related palettes: forge, woodland, archive paper.
         int border = maylline ? 0xFF2B2119 : hunter ? 0xFF101A12 : 0xFF0B0C10;
         int panel = maylline ? 0xFFB99F79 : hunter ? 0xFF202A20 : 0xFF28231D;
         int header = maylline ? 0xFF477D78 : hunter ? 0xFF365A38 : 0xFF75451F;
@@ -101,42 +109,41 @@ public class QuestScreen extends Screen {
         ChatFormatting titleColor = maylline ? ChatFormatting.DARK_AQUA
             : hunter ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
-        graphics.drawCenteredString(font, Component.literal(npcName).withStyle(
+        drawCenteredPlain(graphics, Component.literal(npcName).withStyle(
             nameColor, ChatFormatting.BOLD), width / 2, panelTop + 8, 0xFFFFFF);
-        graphics.drawString(font, Component.literal(questTitle).withStyle(
+        drawPlain(graphics, Component.literal(questTitle).withStyle(
             titleColor, ChatFormatting.BOLD), panelLeft + 13, panelTop + 35,
             maylline ? 0xFF28736D : 0xFFFFFF);
 
         int descY = panelTop + 50;
         for (var line : font.split(Component.literal(description), PANEL_WIDTH - 28)) {
-            graphics.drawString(font, line, panelLeft + 13, descY, bodyText);
+            drawPlain(graphics, line, panelLeft + 13, descY, bodyText);
             descY += 10;
             if (descY > panelTop + 73) break;
         }
 
-        // The story panel is shown at every interaction; after claiming it contains the new chapter.
         int loreTop = panelTop + 78;
         int loreBottom = panelTop + 146;
         graphics.fill(panelLeft + 10, loreTop, right - 10, loreBottom, lorePanel);
         graphics.fill(panelLeft + 10, loreTop, right - 10, loreTop + 1, accent);
-        graphics.drawString(font, Component.literal(maylline ? "ARCHIVES DES FREELANDS"
+        drawPlain(graphics, Component.literal(maylline ? "ARCHIVES DES FREELANDS"
             : "CHRONIQUES DES FREELANDS").withStyle(ChatFormatting.BOLD),
             panelLeft + 16, loreTop + 6, accent);
         int storyY = loreTop + 20;
         for (var line : font.split(Component.literal(story), PANEL_WIDTH - 34)) {
-            graphics.drawString(font, line, panelLeft + 16, storyY, loreInk);
+            drawPlain(graphics, line, panelLeft + 16, storyY, loreInk);
             storyY += 10;
             if (storyY > loreBottom - 10) break;
         }
 
         if (finished) {
-            graphics.drawCenteredString(font, Component.literal("Tous les chapitres sont terminés !")
+            drawCenteredPlain(graphics, Component.literal("Tous les chapitres sont terminés !")
                 .withStyle(maylline ? ChatFormatting.DARK_AQUA : ChatFormatting.GREEN),
                 width / 2, panelTop + 157, maylline ? 0xFF28736D : 0xFFFFFF);
         } else {
             int safeTarget = Math.max(1, targetCount);
             int shown = Math.min(progress, safeTarget);
-            graphics.drawString(font, Component.literal("Progression : " + shown + " / " + targetCount),
+            drawPlain(graphics, Component.literal("Progression : " + shown + " / " + targetCount),
                 panelLeft + 14, panelTop + 157, bodyText);
             int barX = panelLeft + 14;
             int barY = panelTop + 171;
@@ -145,15 +152,15 @@ public class QuestScreen extends Screen {
             int fillWidth = targetCount <= 0 ? 0 : (int) ((long) barWidth * shown / targetCount);
             if (fillWidth > 0) graphics.fill(barX + 1, barY + 1,
                 barX + Math.min(barWidth - 1, fillWidth), barY + 6, progressColor);
-            graphics.drawString(font, Component.literal("Prochaine récompense : " + nextReward + " $"),
+            drawPlain(graphics, Component.literal("Prochaine récompense : " + nextReward + " $"),
                 panelLeft + 14, panelTop + 184, accent);
         }
 
         if (earnedReward > 0) {
-            graphics.drawString(font, Component.literal("Gain obtenu : +" + earnedReward + " $")
+            drawPlain(graphics, Component.literal("Gain obtenu : +" + earnedReward + " $")
                 .withStyle(ChatFormatting.BOLD), panelLeft + 14, panelTop + 198, 0xFFFFD76A);
         } else if (!finished) {
-            graphics.drawString(font, Component.literal("Le montant sera ajouté à ton solde à la validation."),
+            drawPlain(graphics, Component.literal("Le montant sera ajouté à ton solde à la validation."),
                 panelLeft + 14, panelTop + 198, bodyText);
         }
 

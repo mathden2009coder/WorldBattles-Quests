@@ -4,7 +4,7 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="worldbattles_quests"
-version="0.1.12"
+version="0.1.13"
 displayName="WorldBattles Quests"
 description='''Three animated quest NPCs and the history of the Freelands.'''
 
